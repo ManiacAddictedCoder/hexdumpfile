@@ -1,11 +1,16 @@
+/* USAGE: ./hexdump <filename> */
+/* Have a good day. */
+
 /* Initialize the Preprocessor Directives. */
 #include <stdio.h>      //  I/O Stream.  
 #include <stdlib.h>
-#include <wchar.h>
-#include <unistd.h>
+
 /* End Directive. */
 
 /* Functions Fields. */
+
+/* Calculate the length of the file name. Then,
+   return the maximum value of 16. */
 int calLenFunc(const void *filename)
 {
     FILE *fp = fopen(filename, "r+");
@@ -40,13 +45,13 @@ int calLenFunc(const void *filename)
         }
     }
 }
-
+/* Dump the file. */
 void HexDump(const void *data, size_t size)
 {
     FILE *fp = fopen(data, "r+");
     int c, i = 0, count = 0;
     char buffer[17];
-    buffer[16] = '\0';
+    buffer[16] = '\0'; 
     while(i < size && (c = fgetc(fp)) != 0)
     {
         if(i == 0 || i % 16 == 0)
@@ -66,11 +71,12 @@ void HexDump(const void *data, size_t size)
         }
         if((i + 1) % 16 == 0 && (i + 1) != size)
         {
-            printf(" | %s \n", buffer);
+            printf(" | %s |\n", buffer);
+            
         }
-        else if((i + 1) == size)
+        if((i + 1) % 16 == 0 && (i + 1) == size)
         {
-            printf(" | %s", buffer);
+            printf(" | %s |", buffer);
         }
         ++i;
     }
@@ -83,5 +89,6 @@ int main(int argc, char*argv[])
 {
     int length = calLenFunc(argv[1]);
     HexDump(argv[1], length);
+    putchar('\n');
     return 0;
 }
